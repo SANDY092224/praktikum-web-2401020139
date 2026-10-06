@@ -4,6 +4,11 @@ CREATE DATABASE IF NOT EXISTS praktikum_web_2401020139
 
 USE praktikum_web_2401020139;
 
+-- Perbaikan hasil review: berkas ini dapat dijalankan ulang.
+-- Tabel anak (mahasiswa) dihapus lebih dulu agar foreign key tidak menghalangi.
+DROP TABLE IF EXISTS mahasiswa;
+DROP TABLE IF EXISTS program_studi;
+
 CREATE TABLE program_studi (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nama_prodi VARCHAR(100) NOT NULL UNIQUE
@@ -16,8 +21,8 @@ CREATE TABLE mahasiswa (
     email VARCHAR(100) NOT NULL UNIQUE,
     usia TINYINT UNSIGNED NOT NULL,
     program_studi_id BIGINT UNSIGNED NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT fk_mahasiswa_program_studi
         FOREIGN KEY (program_studi_id)
@@ -25,5 +30,7 @@ CREATE TABLE mahasiswa (
         ON UPDATE CASCADE
         ON DELETE RESTRICT,
     CONSTRAINT chk_usia
-        CHECK (usia BETWEEN 17 AND 60)
+        CHECK (usia BETWEEN 17 AND 60),
+    CONSTRAINT chk_nim_format
+        CHECK (nim REGEXP '^[0-9]{10}$')
 ) ENGINE=InnoDB;
