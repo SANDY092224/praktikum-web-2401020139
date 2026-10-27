@@ -20,8 +20,9 @@
         </ul>
     @endif
 
+    {{-- novalidate: validasi peramban dimatikan agar validasi server-side Laravel dapat diuji --}}
     <form action="{{ route('mahasiswa.update', $mahasiswa['id']) }}"
-          method="POST">
+          method="POST" novalidate>
         @csrf
         @method('PUT')
         <p>NIM<br>
